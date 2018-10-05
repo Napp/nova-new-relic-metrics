@@ -95,15 +95,26 @@ class NewRelic
         return $this->reMap(json_decode($response)->metric_data->metrics[0]->timeslices, 'requests_per_minute');
     }
 
-    public function transactions(int $range): array
+    public function transactions(): array
     {
         $response = $this->client->get('https://insights-api.newrelic.com/v1/accounts/' . $this->accountId . '/query', [
             'query' => [
-                'nrql' => 'SELECT average(duration) FROM Transaction FACET name SINCE 1 day ago WHERE appId = ' . $this->appId,
+                'nrql' => 'SELECT average(duration),average(externalDuration) FROM Transaction FACET name SINCE 1 day ago WHERE transactionType = \'Web\' AND appId = ' . $this->appId,
             ]
         ])->getBody();
 
-        return json_decode($response)->facets;
+        $list = json_decode($response)->facets;
+        $output = [];
+        foreach ($list as $item) {
+            $output[] = [
+                'name' => str_replace('WebTransaction/Action', '', $item->name),
+                'duration' => number_format($item->results[0]->average, 2),
+                'externalDuration' => number_format($item->results[1]->average, 2),
+                'link' => 'https://rpm.newrelic.com/accounts/' . $this->accountId . '/applications/' . $this->appId . '/transactions'
+            ];
+        }
+
+        return $output;
     }
 
     public function errorRate(int $range): array

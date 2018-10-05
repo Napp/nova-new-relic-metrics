@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2 - 2018-10-05
+- Added slow transactions card
+
 ## 1.0.1 - 2018-10-05
 - Added MySQL and Redis metrics
 

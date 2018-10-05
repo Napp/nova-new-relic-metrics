@@ -1,11 +1,12 @@
 <?php
 
-namespace Napp\NewRelicMetrics;
+namespace Napp\NewRelicMetrics\Metrics;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
+use Napp\NewRelicMetrics\NewRelic;
 
-class NewRelicErrorRate extends Trend
+class ErrorRate extends Trend
 {
     /**
      * Calculate the value of the metric.

@@ -32,11 +32,12 @@ add to `NovaServiceProvider.php`
 public function cards()
 {
     return [
-        new \Napp\NewRelicMetrics\NewRelicThroughput,
-        new \Napp\NewRelicMetrics\NewRelicErrorRate,
-        new \Napp\NewRelicMetrics\NewRelicResponseTime,
-        new \Napp\NewRelicMetrics\NewRelicMysqlRequests,
-        new \Napp\NewRelicMetrics\NewRelicRedisRequests,
+        new \Napp\NewRelicMetrics\Metrics\Throughput,
+        new \Napp\NewRelicMetrics\Metrics\ErrorRate,
+        new \Napp\NewRelicMetrics\Metrics\ResponseTime,
+        new \Napp\NewRelicMetrics\Metrics\MysqlRequests,
+        new \Napp\NewRelicMetrics\Metrics\RedisRequests,
+        new \Napp\NewRelicMetrics\TransactionsCard,
     ];
 }
 

@@ -18,6 +18,13 @@
             "Napp\\NewRelicMetrics\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Napp\\NewRelicMetrics\\CardServiceProvider"
+            ]
+        }
+    },
     "config": {
         "sort-packages": true
     },

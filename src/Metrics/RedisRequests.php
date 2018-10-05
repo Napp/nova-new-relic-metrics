@@ -1,11 +1,12 @@
 <?php
 
-namespace Napp\NewRelicMetrics;
+namespace Napp\NewRelicMetrics\Metrics;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Metrics\Trend;
+use Napp\NewRelicMetrics\NewRelic;
 
-class NewRelicThroughput extends Trend
+class RedisRequests extends Trend
 {
     /**
      * Calculate the value of the metric.
@@ -15,9 +16,9 @@ class NewRelicThroughput extends Trend
      */
     public function calculate(Request $request)
     {
-        $data = (new NewRelic())->throughput((int) $request->input('range'));
+        $data = (new NewRelic())->redisRequests((int) $request->input('range'));
 
-        return $this->result('Avg ' . $data[1])->trend($data[0])->suffix('rpm');
+        return $this->result('Avg ' . $data[1])->trend($data[0]);
     }
 
     /**
@@ -53,6 +54,6 @@ class NewRelicThroughput extends Trend
      */
     public function uriKey()
     {
-        return 'new-relic-throughput';
+        return 'new-relic-redis-requests';
     }
 }
