@@ -1,0 +1,26 @@
+{
+    "name": "napp/new-relic-metrics",
+    "description": "New Relic metrics for Laravel Nova",
+    "keywords": [
+        "napp",
+        "new relic",
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Napp\\NewRelicMetrics\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
