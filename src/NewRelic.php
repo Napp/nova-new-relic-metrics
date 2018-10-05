@@ -17,16 +17,21 @@ class NewRelic
     /** @var string */
     protected $appId;
 
+    /** @var string */
+    protected $accountId;
+
     public function __construct()
     {
         $this->client = new Client([
             'base_uri' => 'https://api.newrelic.com/',
             'headers' => [
                 'X-Api-Key' => config('services.newrelic.api_key'),
+                'X-Query-Key' => config('services.newrelic.insights_api_key'),
                 'Content-Type' => 'application/json'
             ]
         ]);
         $this->appId = config('services.newrelic.app_id');
+        $this->accountId = config('services.newrelic.account_id');
     }
 
     public function responseTime(int $range): array
@@ -60,6 +65,45 @@ class NewRelic
         ])->getBody();
 
         return $this->reMap(json_decode($response)->metric_data->metrics[0]->timeslices, 'requests_per_minute');
+    }
+
+    public function mySQLRequests(int $range): array
+    {
+        $response = $this->client->get('v2/applications/' . $this->appId . '/metrics/data.json', [
+            'query' => [
+                'names[]' => 'Datastore/MySQL/all',
+                'values[]' => 'requests_per_minute',
+                'from' => now()->subMinutes($range)->toIso8601String(),
+                'to' => now()->toIso8601String()
+            ]
+        ])->getBody();
+
+        return $this->reMap(json_decode($response)->metric_data->metrics[0]->timeslices, 'requests_per_minute');
+    }
+
+    public function redisRequests(int $range): array
+    {
+        $response = $this->client->get('v2/applications/' . $this->appId . '/metrics/data.json', [
+            'query' => [
+                'names[]' => 'Datastore/Redis/all',
+                'values[]' => 'requests_per_minute',
+                'from' => now()->subMinutes($range)->toIso8601String(),
+                'to' => now()->toIso8601String()
+            ]
+        ])->getBody();
+
+        return $this->reMap(json_decode($response)->metric_data->metrics[0]->timeslices, 'requests_per_minute');
+    }
+
+    public function transactions(int $range): array
+    {
+        $response = $this->client->get('https://insights-api.newrelic.com/v1/accounts/' . $this->accountId . '/query', [
+            'query' => [
+                'nrql' => 'SELECT average(duration) FROM Transaction FACET name SINCE 1 day ago WHERE appId = ' . $this->appId,
+            ]
+        ])->getBody();
+
+        return json_decode($response)->facets;
     }
 
     public function errorRate(int $range): array

@@ -16,6 +16,8 @@ add the following to `config/services.php`
 ```php
 'newrelic' => [
     'api_key' => env('NEW_RELIC_API_KEY'),
+    'insights_api_key' => env('NEW_RELIC_INSIGHTS_API_KEY'),
+    'account_id' => env('NEW_RELIC_ACCOUNT_ID'),
     'app_id' => env('NEW_RELIC_APP_ID'),
 ]
 ```
@@ -33,6 +35,8 @@ public function cards()
         new \Napp\NewRelicMetrics\NewRelicThroughput,
         new \Napp\NewRelicMetrics\NewRelicErrorRate,
         new \Napp\NewRelicMetrics\NewRelicResponseTime,
+        new \Napp\NewRelicMetrics\NewRelicMysqlRequests,
+        new \Napp\NewRelicMetrics\NewRelicRedisRequests,
     ];
 }
 
