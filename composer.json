@@ -1,5 +1,5 @@
 {
-    "name": "napp/new-relic-metrics",
+    "name": "napp/nova-new-relic-metrics",
     "description": "New Relic metrics for Laravel Nova",
     "keywords": [
         "napp",
