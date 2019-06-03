@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Napp\NewRelicMetrics\NewRelic;
+use Napp\NewRelicMetrics\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +13,4 @@ use Napp\NewRelicMetrics\NewRelic;
 | as many additional routes to this file as your card may require.
 |
 */
-
-Route::get('/transactions', function (Request $request) {
-    return response()->json((new NewRelic())->transactions());
-});
+Route::get('/transactions', ApiController::class.'@transactions');
